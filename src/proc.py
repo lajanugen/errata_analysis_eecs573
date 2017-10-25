@@ -3,17 +3,9 @@ import numpy as np
 #import tensorflow as tf
 
 from text_processing import extract_text
-import skipthoughts
+#import skipthoughts # NOTE: commenting out for now because I don't have it installed
 
 import argparse
-
-args = argparse.ArgumentParser()
-args.add_argument('-encoder', default='skip')
-args.add_argument('-word_embeddings_path', default='glove.840B.300d.txt')
-args.add_argument('-filename', default='CortexA9.txt')
-
-opts = args.parse_args()
-
 
 class BOW():
 
@@ -35,7 +27,7 @@ class BOW():
     embeddings = []
     for sent in sentences:
       sent = sent.split()
-      bow = np.sum([self.word_embeddings[s] for s in sent if s in self.vocabulary], axis=0)
+      bow = np.sum([self.word_embeddings[s] if s in self.vocabulary else [0.0]*300 for s in sent], axis=0)
       embeddings.append(bow)
       
     return embeddings
@@ -100,35 +92,42 @@ def encode(encoder, sentences):
 
   return embeddings
 
+if __name__ == '__main__':
+  args = argparse.ArgumentParser()
+  args.add_argument('-encoder', default='skip')
+  args.add_argument('-word_embeddings_path', default='glove.840B.300d.txt')
+  args.add_argument('-filename', default='CortexA9.txt')
 
-if opts.encoder == 'skip':
-  model = skipthoughts.load_model()
-  encoder = skipthoughts.Encoder(model)
-elif opts.encoder == 'bow':
-  #encoder = BOW()
-  encoder = BOW(opts.word_embeddings_path)
+  opts = args.parse_args()
 
-sentences = extract_text(opts.filename)
+  if opts.encoder == 'skip':
+    model = skipthoughts.load_model()
+    encoder = skipthoughts.Encoder(model)
+  elif opts.encoder == 'bow':
+    #encoder = BOW()
+    encoder = BOW(opts.word_embeddings_path)
 
-sentences = sentences
+  sentences = extract_text(opts.filename)
 
-sentences = [' '.join(sent) for sent in sentences]
+  sentences = sentences
 
-embeddings = encode(encoder, sentences)
+  sentences = [' '.join(sent) for sent in sentences]
 
-#nns = nearest_neighbors(encoder, sentences[:2], sentences[2:], 5)
-nns = nearest_neighbors(encoder, sentences, sentences, 5)
+  embeddings = encode(encoder, sentences)
 
-nn_file = open('nns.txt', 'w')
-for k, v in nns.iteritems():
-  nn_file.write('Query: ' + k + '\n')
-  nn_file.write('NNs\n')
-  for s in v:
-    nn_file.write(s + '\n')
-  nn_file.write('-------\n')
-  #print('Query: ' + k)
-  #print('NNs')
-  #for s in v:
-  #  print(s)
-  #print('-------')
+  #nns = nearest_neighbors(encoder, sentences[:2], sentences[2:], 5)
+  nns = nearest_neighbors(encoder, sentences, sentences, 5)
+
+  nn_file = open('nns.txt', 'w')
+  for k, v in nns.iteritems():
+    nn_file.write('Query: ' + k + '\n')
+    nn_file.write('NNs\n')
+    for s in v:
+      nn_file.write(s + '\n')
+    nn_file.write('-------\n')
+    #print('Query: ' + k)
+    #print('NNs')
+    #for s in v:
+    #  print(s)
+    #print('-------')
 
