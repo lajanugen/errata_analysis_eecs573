@@ -1,11 +1,12 @@
-
+import argparse
 import numpy as np
 #import tensorflow as tf
 
 from text_processing import extract_text
 #import skipthoughts # NOTE: commenting out for now because I don't have it installed
 
-import argparse
+
+import errata
 
 class BOW():
 
@@ -77,6 +78,39 @@ def nearest_neighbors(encoder, query, candidates, N):
   return nn_sentences
 
 '''
+Identify nearest neighbor *errata* in embedding space, where the distance is computed using the text in the specified field.
+
+@args
+encoder - Encoder object
+query - List of query sentences (strings)
+candidate_errata - List of candidate errors from which to choose nearest neighbors
+N - Number of nearest neighbors to choose
+
+@return
+nn_errata - Dictionary with {sentence:[its nearest neighbors as *errata* (not strings) ]} as (key, value) pairs
+'''
+def nearest_neighbors_errata(encoder, query, candidate_errata, N, field='effect'): 
+  query_embs = encoder.encode(query)
+  candidate_text = [candidates.get_field(field) for candidate in candidate_errata]
+  candidate_embs = encoder.encode(candidate_text)
+  
+  query_embs = normalize(query_embs)
+  candidate_embs = normalize(candidate_embs)
+  
+  neg_cos_dist = -np.matmul(query_embs, np.transpose(candidate_embs))
+  
+  cos_dist_sort_indices = np.argsort(neg_cos_dist, axis=1)
+
+  nn_errata = {}
+  for i in range(len(query)):
+    query_sent = query[i]
+    curr_nn_errata = [candidate_errata[j] for j in cos_dist_sort_indices[i][:N]]
+    nn_errata[query_sent] = curr_nn_errata
+  
+  return nn_errata
+  
+
+'''
 Embed a given list of sentences
 
 @args
@@ -106,6 +140,8 @@ if __name__ == '__main__':
   elif opts.encoder == 'bow':
     #encoder = BOW()
     encoder = BOW(opts.word_embeddings_path)
+  
+  # TODO - parse in the data into Error objects and pass into nearest neighbor function
 
   sentences = extract_text(opts.filename)
 
