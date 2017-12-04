@@ -76,9 +76,9 @@ def visualize_sentences(sentences):
 
 if __name__ == '__main__':
   args = argparse.ArgumentParser()
-  args.add_argument('-encoder', default='bow')
-  args.add_argument('-word_embeddings_path')
-  args.add_argument('-filename', help='Filename of the errata file.')
+  args.add_argument('--encoder', default='bow')
+  args.add_argument('--word_embeddings_path')
+  args.add_argument('--filename', help='Filename of the errata file.')
   opts = args.parse_args()
 
   #if opts.encoder == 'skip':

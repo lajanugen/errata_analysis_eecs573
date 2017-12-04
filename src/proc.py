@@ -83,15 +83,17 @@ Identify nearest neighbor *errata* in embedding space, where the distance is com
 @args
 encoder - Encoder object
 query - List of query sentences (strings)
-candidate_errata - List of candidate errors from which to choose nearest neighbors
+candidate_errata - List of candidate errors from which to choose nearest neighbors; each error is an Error class instance
 N - Number of nearest neighbors to choose
 
 @return
 nn_errata - Dictionary with {sentence:[its nearest neighbors as *errata* (not strings) ]} as (key, value) pairs
 '''
-def nearest_neighbors_errata(encoder, query, candidate_errata, N, field='effect'): 
+def nearest_neighbors_errata(encoder, query, candidate_errata, N, field='Failure'): 
+  # TODO: test this out!
   query_embs = encoder.encode(query)
   candidate_text = [candidates.get_field(field) for candidate in candidate_errata]
+  candidate_text = [' '.join(process_text(text, sent_tokenize=False)) for text in candidate_text]
   candidate_embs = encoder.encode(candidate_text)
   
   query_embs = normalize(query_embs)
@@ -108,7 +110,6 @@ def nearest_neighbors_errata(encoder, query, candidate_errata, N, field='effect'
     nn_errata[query_sent] = curr_nn_errata
   
   return nn_errata
-  
 
 '''
 Embed a given list of sentences
@@ -126,30 +127,15 @@ def encode(encoder, sentences):
 
   return embeddings
 
-if __name__ == '__main__':
-  args = argparse.ArgumentParser()
-  args.add_argument('-encoder', default='skip')
-  args.add_argument('-word_embeddings_path', default='glove.840B.300d.txt')
-  args.add_argument('-filename', default='CortexA9.txt')
-
-  opts = args.parse_args()
-
-  if opts.encoder == 'skip':
-    model = skipthoughts.load_model()
-    encoder = skipthoughts.Encoder(model)
-  elif opts.encoder == 'bow':
-    #encoder = BOW()
-    encoder = BOW(opts.word_embeddings_path)
-  
-  # TODO - parse in the data into Error objects and pass into nearest neighbor function
-
-  sentences = extract_text(opts.filename)
+# ---------------
+def get_nn_sentences(args, encoder):
+  sentences = extract_text(args.filename)
 
   sentences = sentences
 
   sentences = [' '.join(sent) for sent in sentences]
 
-  embeddings = encode(encoder, sentences)
+  #embeddings = encode(encoder, sentences)
 
   #nns = nearest_neighbors(encoder, sentences[:2], sentences[2:], 5)
   nns = nearest_neighbors(encoder, sentences, sentences, 5)
@@ -167,3 +153,39 @@ if __name__ == '__main__':
     #  print(s)
     #print('-------')
 
+def get_nn_errata(args, encoder):
+  errors = extract_errata(args.filename)
+  failure_text = [process_text(error.get_field['Failure'], sent_tokenize=False) for error in errors]
+  failure_text = [' '.join(text) for text in failure_text] 
+
+  nns = nearest_neighbors_errata(encoder, failure_text[:2], errors[2:100], 5)
+
+  nn_file = open('nns.txt', 'w')
+  for query, neighbors in nns.iteritems():
+    nn_file.write('Query: ' + k + '\n')
+    nn_file.write('NNs\n')
+    for neighbor in neighbors:
+      possible_description = neighbor.get_field('Details')
+      nn_file.write(possible_description) 
+    nn_file.write('-------------\n')
+
+if __name__ == '__main__':
+  args = argparse.ArgumentParser()
+  args.add_argument('--encoder', default='skip')
+  args.add_argument('--word_embeddings_path', default='glove.840B.300d.txt')
+  args.add_argument('--filename', default='CortexA9.txt')
+
+  opts = args.parse_args()
+
+  if opts.encoder == 'skip':
+    model = skipthoughts.load_model()
+    encoder = skipthoughts.Encoder(model)
+  elif opts.encoder == 'bow':
+    #encoder = BOW()
+    encoder = BOW(opts.word_embeddings_path)
+
+  # get_nn_sentences(args, encoder)
+  get_nn_errata(opts, encoder)
+  
+  
+  
