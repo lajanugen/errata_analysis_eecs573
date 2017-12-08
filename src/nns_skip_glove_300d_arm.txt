@@ -1,0 +1,56 @@
+Query: 2.2 flash memory sector protection
+NNs
+Failure: 
+2.3 Flash memory remapping 
+Details: 
+Description of limitation in revision G There are two independent Flash memory banks (primary and secondary) that allow read-while-write capability from one bank to the other, enabling in-application programming (IAP) of the primary bank while executing code from the secondary bank. After IAP has upgraded firmware in the primary bank, the bootloader code in the secondary bank should remap the banks by writing to FMI registers FMI_BBADR and FMI_NBBADR in order to have the primary bank start at address 0x0, which allows interrupt handlers to reside in the application code primary bank instead of interrupts being handled by bootloader code in the secondary bank. There are two forms of reset in the STR91xFA: A global reset (from power-up or voltage drop-out) that clears all functions in the device, and a system reset (from the reset input pin, watchdog, or JTAG reset command) that clears all but a few configuration registers. 4/16  STR91xFA Silicon limitations and fixes Silicon limitation The remapping operation is possible. However, when a system reset occurs after the remapping, the application hangs because the FMI_BBADR and FMI_NBBADR registers which define bank locations are not cleared by the system reset, while the FMI_CR register which controls the chip select enable of the non boot bank are cleared by the system reset. 
+
+Failure: 
+2.17 Daisy chained interrupt controller VIC1 hardware priority management limitation 
+Details: 
+Description of limitation For daisy-chained interrupts, if only the VAR from one VIC is read, it does not update the hardware priority in the other VIC. This means the daisy chained interrupt controller doesn't realize the interrupt is being serviced and keeps the interrupt request active. For daisy-chained interrupts the processor must read the VAR register from both interrupt controllers and branch to the addresses provided. However, the address provided by reading the daisy-chained VAR register must be manipulated to skip the interrupt preamble. If two daisy chained interrupts occur soon after each other and the daisy chained VAR register address isn't branched to, the interrupt controller priority logic may be updated incorrectly. This may cause a low priority interrupt to be missed. 12/16  STR91xFA Silicon limitations and fixes 
+
+Failure: 
+2.18 Flash configuration register bits correction 
+Details: 
+Description of limitation Using wait state insertion bits and/or the Flash bus clock bit under some specific configurations and/or combinations with respect to the Flash programming manual, may cause the device to be used outside its operating conditions. 
+
+Failure: 
+2.6 ETM (embedded trace module) configuration 
+Details: 
+Description of limitation By default, the ETM9 interface in the STR91xFA core is an 8-bit medium size model as defined by ARM Ltd. When an emulator tool boots up and performs an automatic configuration on the ETM (ETM sniffers), the configuration register always sends back the 8-bit model status. However, in order to reduce the number of I/O pins required for debugging, the ETM trace data port is implemented as a 4-bit port. When polled, the 8-bit status provided by the configuration register is incorrect. 
+
+Failure: 
+3.6 LCD.1: Low throughput when LCD controller accesses DDR/SDRAM 
+Details: 
+ The LCD controller is an AHB Master that uses an internal DMA controller to transfer frame data from memory to the LCD panel.  The time required to read data from either SDR or DDR SDRAM using the LCD DMA controller takes longer than expected. This issue has little effect when the LCD DMA controller reads frame data from IRAM or external SRAM. 
+
+-------------
+Query: 2.1 flash memory status register bit 7
+NNs
+Failure: 
+2.7 EMI bus limitations 2.7.1 Impact of SCU_CLKCNTR register modification on EMI operation with clock ratio of 2 
+Details: 
+Description of limitation When the EMI clock is configured with a ratio of 2, modifying SCU_CLKCNTR register may cause incorrect EMI write cycles to occur when the EMI is used. This is due to the de-synchronization of the two clock state machines feeding the EMI when the EMI clock ratio is configured with a ratio of 2. 
+
+Failure: 
+2.18 Flash configuration register bits correction 
+Details: 
+Description of limitation Using wait state insertion bits and/or the Flash bus clock bit under some specific configurations and/or combinations with respect to the Flash programming manual, may cause the device to be used outside its operating conditions. 
+
+Failure: 
+2.3 Flash memory remapping 
+Details: 
+Description of limitation in revision G There are two independent Flash memory banks (primary and secondary) that allow read-while-write capability from one bank to the other, enabling in-application programming (IAP) of the primary bank while executing code from the secondary bank. After IAP has upgraded firmware in the primary bank, the bootloader code in the secondary bank should remap the banks by writing to FMI registers FMI_BBADR and FMI_NBBADR in order to have the primary bank start at address 0x0, which allows interrupt handlers to reside in the application code primary bank instead of interrupts being handled by bootloader code in the secondary bank. There are two forms of reset in the STR91xFA: A global reset (from power-up or voltage drop-out) that clears all functions in the device, and a system reset (from the reset input pin, watchdog, or JTAG reset command) that clears all but a few configuration registers. 4/16  STR91xFA Silicon limitations and fixes Silicon limitation The remapping operation is possible. However, when a system reset occurs after the remapping, the application hangs because the FMI_BBADR and FMI_NBBADR registers which define bank locations are not cleared by the system reset, while the FMI_CR register which controls the chip select enable of the non boot bank are cleared by the system reset. 
+
+Failure: 
+2.4 Flash fetch/read across banks 
+Details: 
+Description of limitation In either of the following two conditions, the CPU may freeze or generate an exception: 1. When the two banks (Bank0 and Bank1) are configured at contiguous addresses in the STR91xFA address map and if a code sequence is stored and then fetched by the CPU across this boundary, 2. When data is read from a bank other than the bank fetched by the CPU for execution. This will not be fixed in future silicon revisions. 
+
+Failure: 
+LDM instruction fails to  load non-cached data from  memory
+Details: 
+Impact:  When a load multiple (LDM) instruction is used to load two  specific registers from an un-cached region of memory, and  the load instruction begins immediately after a delayed  buffered write, then the LDM will not load the second register  correctly. 
+
+-------------
