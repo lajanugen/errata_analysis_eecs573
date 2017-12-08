@@ -1,12 +1,13 @@
 import argparse
 import numpy as np
-#import tensorflow as tf
+import tensorflow as tf
 
-from text_processing import extract_text
+from text_processing import extract_text, extract_errata, process_text
 #import skipthoughts # NOTE: commenting out for now because I don't have it installed
 
 
 import errata
+import text_processing
 
 class BOW():
 
@@ -18,17 +19,19 @@ class BOW():
     for line in lines:
       line = line.strip().split()
       word_embeddings[line[0]] = np.array(map(float, line[1:]))
+      self.size = int(word_embeddings[line[0]].size)
 
     print('Done loading embeddings')
 
     self.word_embeddings = word_embeddings
     self.vocabulary = set(self.word_embeddings.keys())
+    
 
   def encode(self, sentences):
     embeddings = []
     for sent in sentences:
       sent = sent.split()
-      bow = np.sum([self.word_embeddings[s] if s in self.vocabulary else [0.0]*300 for s in sent], axis=0)
+      bow = np.sum([self.word_embeddings[s] if s in self.vocabulary else [0.0]*self.size for s in sent], axis=0)
       embeddings.append(bow)
       
     return embeddings
@@ -92,7 +95,7 @@ nn_errata - Dictionary with {sentence:[its nearest neighbors as *errata* (not st
 def nearest_neighbors_errata(encoder, query, candidate_errata, N, field='Failure'): 
   # TODO: test this out!
   query_embs = encoder.encode(query)
-  candidate_text = [candidates.get_field(field) for candidate in candidate_errata]
+  candidate_text = [candidate.get_field(field) for candidate in candidate_errata]
   candidate_text = [' '.join(process_text(text, sent_tokenize=False)) for text in candidate_text]
   candidate_embs = encoder.encode(candidate_text)
   
@@ -155,18 +158,24 @@ def get_nn_sentences(args, encoder):
 
 def get_nn_errata(args, encoder):
   errors = extract_errata(args.filename)
-  failure_text = [process_text(error.get_field['Failure'], sent_tokenize=False) for error in errors]
+  failure_text = [process_text(error.get_field('Failure'), sent_tokenize=False) for error in errors]
   failure_text = [' '.join(text) for text in failure_text] 
 
   nns = nearest_neighbors_errata(encoder, failure_text[:2], errors[2:100], 5)
 
   nn_file = open('nns.txt', 'w')
   for query, neighbors in nns.iteritems():
-    nn_file.write('Query: ' + k + '\n')
+    nn_file.write('Query: ' + query + '\n')
     nn_file.write('NNs\n')
     for neighbor in neighbors:
       possible_description = neighbor.get_field('Details')
+      failure = neighbor.get_field('Failure')
+      nn_file.write('Failure: \n')
+      nn_file.write(failure)
+      nn_file.write('\n')
+      nn_file.write('Details: \n')
       nn_file.write(possible_description) 
+      nn_file.write('\n\n')
     nn_file.write('-------------\n')
 
 if __name__ == '__main__':
@@ -182,7 +191,9 @@ if __name__ == '__main__':
     encoder = skipthoughts.Encoder(model)
   elif opts.encoder == 'bow':
     #encoder = BOW()
+    print 'Loading word embeddings into BOW encoder...'
     encoder = BOW(opts.word_embeddings_path)
+    print 'Done loading word embeddings.'
 
   # get_nn_sentences(args, encoder)
   get_nn_errata(opts, encoder)
