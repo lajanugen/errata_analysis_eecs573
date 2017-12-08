@@ -1,10 +1,8 @@
 import argparse
 import numpy as np
-import tensorflow as tf
 
 from text_processing import extract_text, extract_errata, process_text
-#import skipthoughts # NOTE: commenting out for now because I don't have it installed
-
+import skipthoughts 
 
 import errata
 import text_processing
