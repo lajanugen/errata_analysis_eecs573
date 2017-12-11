@@ -59,12 +59,18 @@ def extract_text(filename, fields=['Details'], delimiter='\t'):
   return tokenized_sents
 
 def extract_errata(filename, delimiter='\t'):
+  seen_failures = {}
   all_errata = []
   with open(filename, 'rb') as infile:
     reader = csv.DictReader(infile, delimiter=delimiter)
     for row in reader:
       curr_error = errata.Error(row)
-      all_errata.append(curr_error)
+      curr_failure = curr_error.get_field('Failure')
+      if curr_failure in seen_failures:
+        continue
+      else:
+        seen_failures[curr_failure] = True
+        all_errata.append(curr_error)
   return all_errata 
 
 if __name__ == '__main__':
