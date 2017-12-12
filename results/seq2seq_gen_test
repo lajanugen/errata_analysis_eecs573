@@ -1,0 +1,110 @@
+The Processor Incorrectly Transitions from Polling.Active to Polling.Compliance After Receiving Two TS1 Ordered Sets with the Compliance Bit Set
+PMI May Be Delayed to Next PEBS Event
+The PCIe* Link at 8.0 GT/s is Transitioning Too Soon to Normal Operation While Training
+The BS Flag in DR6 May Be Set for Non-Single-Step # DB Exception
+Values for LBR/BTS/BTM will be Incorrect after an Exit from SMM
+A PCIe* Device That Initially Transmits Minimal Posted Data Credits May Cause a System Hang
+B0-B3 Bits in DR6 May Not Be Properly Cleared after Code Breakpoint
+The Processor May Report a # TS Instead of a # GP Fault
+Last Branch Records ( LBR ) Updates May Be Incorrect after a Task Switch
+Unexpected Interrupts May Occur on C6 Exit If Using APIC Timer to Generate Interrupts
+Performance Monitoring Event for Outstanding Bus Requests Ignores AnyThread Bit
+Store to WT Memory Data May be Seen in Wrong Order by Two , Subsequent Loads
+Changing the Memory Type for an In-Use Page Translation May Lead to Memory-Ordering Violations
+Non-Temporal Data Store May be Observed in Wrong Program Order
+Performance Monitor Counter INST_RETIRED.STORES May Count Higher than Expected
+Code Segment Limit/Canonical Faults on RSM May be Serviced before Higher Priority Interrupts/Exceptions and May Push the Wrong Address Onto the Stack
+CPUID Reports Architectural Performance Monitoring Version 2 is Supported , When Only Version 1 Capabilities are Available
+Short Nested Loops That Span Multiple 16-Byte Boundaries May Cause a Machine Check Exception or a System Hang
+NMIs May Not Be Blocked by a VM-Entry Failure
+FP Data Operand Pointer May Be Incorrectly Calculated After an FP Access Which Wraps a 4-Gbyte Boundary in Code That Uses 32-Bit Address Size in 64-bit Mode
+Page Access Bit May Be Set Prior to Signaling a Code Segment Limit Fault
+The Combination of a Page-Split Lock Access And Data Accesses That Are Split Across Cacheline Boundaries May Lead to Processor Livelock
+Changing the Memory Type for an In-Use Page Translation May Lead to Memory-Ordering Violations
+VM Entry Loading an Unusable SS Might Not Set SS.B to 1
+PCIe Squelch Detect May be Dropped
+The Combination of a Page-Split Lock Access And Data Accesses That Are Split Across Cacheline Boundaries May Lead to Processor Livelock
+Performance Monitoring Event FP_MMX_TRANS_TO_MMX May Not Count Some Transitions
+Storage of PEBS Record Delayed Following Execution of MOV SS or STI
+Store Ordering May be Incorrect between WC and WP Memory Types
+Updating Code Page Directory Attributes without TLB Invalidation May Result in Improper Handling of Code # PF
+PECI PCIConfigRd ( ) Followed by a GetTemp ( ) May Cause System Hang in Package C6 State
+FP Data Operand Pointer May Be Incorrectly Calculated After an FP Access Which Wraps a 4-Gbyte Boundary in Code That Uses 32-Bit Address Size in 64-bit Mode
+Performance Monitoring Event MISALIGN_MEM_REF May Over Count
+Performance Monitoring Event MISALIGN_MEM_REF May Over Count
+NA
+NA
+NA
+NA
+Non-Temporal Data Store May be Observed in Wrong Program Order
+FP Data Operand Pointer May Be Incorrectly Calculated After an FP Access Which Wraps a 4-Gbyte Boundary in Code That Uses 32-Bit Address Size in 64-bit Mode
+PMI While LBR Freeze Enabled May Result in Old/Out-of-Date LBR Information
+VMCALL Failure Due to Corrupt MSEG Location May Cause VM Exit to Load the Machine State Incorrectly
+FP Data Operand Pointer May Be Incorrectly Calculated After an FP Access Which Wraps a 4-Gbyte Boundary in Code That Uses 32-Bit Address Size in 64-bit Mode
+BTS ( Branch Trace Store ) and PEBS ( Precise Event Based Sampling ) May Update Memory outside the BTS/PEBS Buffer
+EOI Transaction May Not be Sent if Software Enters Core C6 During an Interrupt Service Routine
+Performance Monitoring Event FP_MMX_TRANS_TO_MMX May Not Count Some Transitions
+Update of Read/Write ( R/W ) or User/Supervisor ( U/S ) or Present ( P ) Bits without TLB Shootdown May Cause Unexpected Processor Behavior
+LTR Message is Enabled , Warm Reset Incorrectly Clears IA32_FEATURE_CONTROL MSR and May Contain the Processor DDR3 Expected
+Instruction Fetch May Cause Machine Check if Page Size and Memory Type Was Changed Without Invalidation
+Changing the Memory Type for an In-Use Page Translation May Lead to Memory-Ordering Violations
+The Processor May Report a # TS Instead of a # GP Fault
+FP Data Operand Pointer May Be Incorrectly Calculated After an FP Access Which Wraps a 4-Gbyte Boundary in Code That Uses 32-Bit Address Size in 64-bit Mode
+Using Memory Type Aliasing with Cacheable and WC Memory Types May Lead to Memory Ordering Violations
+VM Exits Due to “NMI-Window Exiting” May Be Delayed by One Instruction
+and MSR_PERF_FIXED_CTR2 ( 30BH ) are Note Cleared When the Processor Is Reset
+System May Hang if MC_CHANNEL_ { 0,1 } _MC_DIMM_INIT_CMD.DO_ZQCL Commands Are Not Issued in Increasing Populated DDR3 Rank Order
+IA32_MC1_STATUS MSR Bit [ 60 ] Does Not Reflect Machine Check Error Reporting Enable Correctly
+FP Data Operand Pointer May Be Incorrectly Calculated After an FP Access Which Wraps a 4-Gbyte Boundary in Code That Uses 32-Bit Address Size in 64-bit Mode
+NMIs May Not Be Blocked by a VM-Entry Failure
+Benign Exception after a Double Fault May Not Cause a Triple Fault Shutdown
+Faulting Executions of FXRSTOR May Update State Inconsistently
+A VM Exit Occuring in IA-32e Mode May Not Produce a VMX Abort When Expected
+64-bit Register IP-relative Instruction May Return Unexpected Results
+A Write to an APIC Register Sometimes May Appear to Have Not Occurred
+An xTPR Update Transaction Cycle , if Enabled , May be Issued to the FSB after the Processor has Issued a Stop-Grant Special Cycle
+The Processor May Report a # TS Instead of a # GP Fault
+Updating Code Page Directory Attributes without TLB Invalidation May Result in Improper Handling of Code # PF
+MOV To/From Debug Registers Causes Debug Exception
+Using 2M/4M Pages When A20M # Is Asserted May Result in Incorrect Address Translations
+Values for LBR/BTS/BTM Will Be Incorrect after an Exit from SMM
+Incorrect Address Computed For Last Byte of FXSAVE/FXRSTOR Image Leads to Partial Memory Update
+A Thermal Interrupt is Not Generated when the Current Temperature is Invalid
+Programming the Digital Thermal Sensor ( DTS ) Threshold May Cause Unexpected Thermal Interrupts
+Synchronous Reset of IA32_MPERF on IA32_APERF Overflow May Not Work
+Code Segment Limit/Canonical Faults on RSM May be Serviced before Higher Priority Interrupts/Exceptions and May Push the Wrong Address Onto the Stack
+With TF ( Trap Flag ) Asserted , FP Instruction That Triggers an Unmasked FP Exception May Take Single Step Trap before Retirement of Instruction
+Code Segment Limit/Canonical Faults on RSM May be Serviced before Higher Priority Interrupts/Exceptions and May Push the Wrong Address Onto the Stack
+Code Segment Limit/Canonical Faults on RSM May be Serviced before Higher Priority Interrupts/Exceptions and May Push the Wrong Address Onto the Stack
+BTS ( Branch Trace Store ) and PEBS ( Precise Event Based Sampling ) May Update Memory outside the BTS/PEBS Buffer
+Single Step Interrupts with Floating Point Exception Pending May Be Mishandled
+Unsynchronized Cross-Modifying Code Operations Can Cause Unexpected Instruction Execution Results
+IO_SMI Indication in SMRAM State Save Area May be Set Incorrectly
+Writes to IA32_DEBUGCTL MSR May Fail when FREEZE_LBRS_ON_PMI is Set
+Address Reported by Machine-Check Architecture ( MCA ) on L2 Cache Errors May be Incorrect
+Pending x87 FPU Exceptions ( # MF ) Following STI May Be Serviced Before Higher Priority Interrupts
+Benign Exception after a Double Fault May Not Cause a Triple Fault Shutdown
+IA32_MC1_STATUS MSR Bit [ 60 ] Does Not Reflect Machine Check Error Reporting Enable Correctly
+Faulting MMX Instruction May Incorrectly Update x87 FPU Tag Word
+Spurious Interrupts May be Generated From the Intel® VT-d Remap Engine
+LBR/BTM/BTS Information Immediately After a Transition From Legacy/Compatibility Mode to 64-bit Mode May be Incorrect
+CPUID Instruction Returns Incorrect Brand String
+A Logical Processor May Incorrectly Clear Thermal Status Log Indicator During Intel Deep Power Down Technology State Transition
+The Instruction Cache Does Not Respond to Snoops When All Logical Processors on a Core Are in an Inactive State
+The Combination of a Page-Split Lock Access And Data Accesses That Are Split Across Cacheline Boundaries May Lead to Processor Livelock
+The Combination of a Page-Split Lock Access And Data Accesses That Are Split Across Cacheline Boundaries May Lead to Processor Livelock
+IRET under Certain Conditions May Cause an Unexpected Alignment Check Exception
+Thermal Interrupts are Dropped During and While Exiting Intel® Deep Power-Down State
+VM Entry May Omit Consistency Checks Related to Bit 14 ( BS ) of the Pending Debug Exception Field in Guest-State Area of the VMCS
+Processor May Livelock During On Demand Clock Modulation
+CPUID Instruction Returns Incorrect Brand String
+GP and Fixed Performance Monitoring Counters With AnyThread Bit Set May Not Accurately Count Only OS or Only USR Events
+PMI Request is Not Generated on a Counter Overflow if its OVF Bit is Already Set in IA32_PERF_GLOBAL_STATUS
+CPUID Indicates Wrong L2 Associativity in Leaf 80000006H
+Code Segment Limit/Canonical Faults on RSM May be Serviced before Higher Priority Interrupts/Exceptions and May Push the Wrong Address Onto the Stack
+NA
+Processor May Use an Incorrect Translation if the TLBs Contain Two Different Translations For a Linear Address
+CPUID Feature Flag Incorrectly Indicates TM2 as Supported
+IA32_MC2_STATUS [ OVERFLOW ] Bit is Not Set When Single-Bit Correctable ECC Error Occurs
+FP Data Operand Pointer May Be Incorrectly Calculated After an FP Access Which Wraps a 4-Gbyte Boundary in Code That Uses 32-Bit Address Size in 64-bit Mode
+FP Data Operand Pointer May Be Incorrectly Calculated After an FP Access Which Wraps a 4-Gbyte Boundary in Code That Uses 32-Bit Address Size in 64-bit Mode
